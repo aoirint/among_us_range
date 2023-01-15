@@ -2,7 +2,6 @@ import * as React from "react"
 import { graphql, HeadFC, PageProps, useStaticQuery } from "gatsby"
 import '../styles.scss'
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
-import '../gatsby-types.d'
 
 interface RangeType {
   id: string
