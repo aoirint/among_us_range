@@ -165,9 +165,9 @@ const IndexPage: React.FC<PageProps> = () => {
       <h1 className='is-size-3'>
         Among Us Range
       </h1>
-      <h1 className='is-size-7 mb-5'>
+      <h2 className='is-size-7 mb-5'>
         Among Us v2022.12.14 / Extreme Roles v5.0.0.6
-      </h1>
+      </h2>
       <div className='columns'>
         <div className='column'>
           <div className='field'>
