@@ -3,8 +3,9 @@ import type { GatsbyConfig } from "gatsby";
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `Among Us Range`,
-    siteUrl: `https://www.yourdomain.tld`
+    siteUrl: `https://aoirint.github.io/among_us_range/`
   },
+  pathPrefix: '/among_us_range',
   // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
   // If you use VSCode you can also use the GraphQL plugin
   // Learn more at: https://gatsby.dev/graphql-typegen
