@@ -24,6 +24,13 @@ const config: GatsbyConfig = {
   }, {
     resolve: 'gatsby-source-filesystem',
     options: {
+      "name": "range_images",
+      "path": "./src/range_images/"
+    },
+    __key: "range_images"
+  }, {
+    resolve: 'gatsby-source-filesystem',
+    options: {
       "name": "pages",
       "path": "./src/pages/"
     },

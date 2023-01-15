@@ -1,189 +1,230 @@
 import * as React from "react"
-import type { HeadFC, PageProps } from "gatsby"
+import { graphql, HeadFC, PageProps, useStaticQuery } from "gatsby"
+import '../styles.scss'
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import '../gatsby-types.d'
 
-const pageStyles = {
-  color: "#232129",
-  padding: 96,
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
+interface RangeType {
+  id: string
+  name: string
 }
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-}
-const headingAccentStyles = {
-  color: "#663399",
-}
-const paragraphStyles = {
-  marginBottom: 48,
-}
-const codeStyles = {
-  color: "#8A6534",
-  padding: 4,
-  backgroundColor: "#FFF4DB",
-  fontSize: "1.25rem",
-  borderRadius: 4,
-}
-const listStyles = {
-  marginBottom: 96,
-  paddingLeft: 0,
-}
-const doclistStyles = {
-  paddingLeft: 0,
-}
-const listItemStyles = {
-  fontWeight: 300,
-  fontSize: 24,
-  maxWidth: 560,
-  marginBottom: 30,
-}
-
-const linkStyle = {
-  color: "#8954A8",
-  fontWeight: "bold",
-  fontSize: 16,
-  verticalAlign: "5%",
-}
-
-const docLinkStyle = {
-  ...linkStyle,
-  listStyleType: "none",
-  display: `inline-block`,
-  marginBottom: 24,
-  marginRight: 12,
-}
-
-const descriptionStyle = {
-  color: "#232129",
-  fontSize: 14,
-  marginTop: 10,
-  marginBottom: 0,
-  lineHeight: 1.25,
-}
-
-const docLinks = [
+const rangeTypes: RangeType[] = [
   {
-    text: "TypeScript Documentation",
-    url: "https://www.gatsbyjs.com/docs/how-to/custom-configuration/typescript/",
-    color: "#8954A8",
+    id: 'classic',
+    name: 'クラシック',
   },
   {
-    text: "GraphQL Typegen Documentation",
-    url: "https://www.gatsbyjs.com/docs/how-to/local-development/graphql-typegen/",
-    color: "#8954A8",
-  }
-]
-
-const badgeStyle = {
-  color: "#fff",
-  backgroundColor: "#088413",
-  border: "1px solid #088413",
-  fontSize: 11,
-  fontWeight: "bold",
-  letterSpacing: 1,
-  borderRadius: 4,
-  padding: "4px 6px",
-  display: "inline-block",
-  position: "relative" as "relative",
-  top: -2,
-  marginLeft: 10,
-  lineHeight: 1,
-}
-
-const links = [
-  {
-    text: "Tutorial",
-    url: "https://www.gatsbyjs.com/docs/tutorial/",
-    description:
-      "A great place to get started if you're new to web development. Designed to guide you through setting up your first Gatsby site.",
-    color: "#E95800",
+    id: 'hidenseek',
+    name: 'かくれんぼ',
   },
   {
-    text: "How to Guides",
-    url: "https://www.gatsbyjs.com/docs/how-to/",
-    description:
-      "Practical step-by-step guides to help you achieve a specific goal. Most useful when you're trying to get something done.",
-    color: "#1099A8",
-  },
-  {
-    text: "Reference Guides",
-    url: "https://www.gatsbyjs.com/docs/reference/",
-    description:
-      "Nitty-gritty technical descriptions of how Gatsby works. Most useful when you need detailed information about Gatsby's APIs.",
-    color: "#BC027F",
-  },
-  {
-    text: "Conceptual Guides",
-    url: "https://www.gatsbyjs.com/docs/conceptual/",
-    description:
-      "Big-picture explanations of higher-level Gatsby concepts. Most useful for building understanding of a particular topic.",
-    color: "#0D96F2",
-  },
-  {
-    text: "Plugin Library",
-    url: "https://www.gatsbyjs.com/plugins",
-    description:
-      "Add functionality and customize your Gatsby site or app with thousands of plugins built by our amazing developer community.",
-    color: "#8EB814",
-  },
-  {
-    text: "Build and Host",
-    url: "https://www.gatsbyjs.com/cloud",
-    badge: true,
-    description:
-      "Now you’re ready to show the world! Give your Gatsby site superpowers: Build and host on Gatsby Cloud. Get started for free!",
-    color: "#663399",
+    id: 'umbrer',
+    name: 'アンブレイヤー',
   },
 ]
+
+interface ViewPoint {
+  id: string
+  name: string
+}
+const rangeType2ViewPoints: Record<string, ViewPoint[]> = {
+  'classic': [
+    {
+      id: 'classic_crewmate',
+      name: 'クルーメイト',
+    },
+    {
+      id: 'classic_impostor',
+      name: 'インポスター',
+    },
+  ],
+  'hidenseek': [
+    {
+      id: 'hidenseek_crewmate',
+      name: 'クルーメイト',
+    },
+    {
+      id: 'hidenseek_impostor',
+      name: 'インポスター',
+    },
+  ],
+  'umbrer': [
+    {
+      id: 'umbrer_crewmate',
+      name: 'クルーメイト',
+    },
+    {
+      id: 'umbrer_umbrer',
+      name: 'アンブレイヤー',
+    },
+  ],
+}
+
+interface RangeValue {
+  id: string
+  name: string
+}
+const rangeType2RangeValues: Record<string, RangeValue[]> = {
+  'classic': [
+    {
+      id: 'classic_short',
+      name: 'ショート',
+    },
+    {
+      id: 'classic_middle',
+      name: 'ミドル',
+    },
+    {
+      id: 'classic_long',
+      name: 'ロング',
+    },
+  ],
+  'hidenseek': [
+    {
+      id: 'hidenseek_short',
+      name: 'ショート',
+    },
+  ],
+  'umbrer': [
+    {
+      id: 'umbrer_0.5',
+      name: '0.5',
+    },
+    {
+      id: 'umbrer_0.7',
+      name: '0.7',
+    },
+    {
+      id: 'umbrer_1.0',
+      name: '1.0',
+    },
+    {
+      id: 'umbrer_1.5',
+      name: '1.5',
+    },
+    {
+      id: 'umbrer_2.0',
+      name: '2.0',
+    },
+    {
+      id: 'umbrer_2.5',
+      name: '2.5',
+    },
+    {
+      id: 'umbrer_3.0',
+      name: '3.0',
+    },
+  ],
+}
 
 const IndexPage: React.FC<PageProps> = () => {
+  const rangeImagesData = useStaticQuery<Queries.GetRangeImagesQuery>(graphql`
+    query GetRangeImages {
+      allFile(filter: {
+        sourceInstanceName: {eq: "range_images"}
+        extension: {eq: "png"}
+      }) {
+        edges {
+          node {
+            relativePath
+            childImageSharp {
+              gatsbyImageData
+            }
+          }
+        }
+      }
+    }
+  `)
+
+  const [selectedRangeType, setSelectedRangeType] = React.useState<RangeType>(rangeTypes[0])
+  const [selectedViewPoint, setSelectedViewPoint] = React.useState<ViewPoint>(rangeType2ViewPoints['classic'][0])
+  const [selectedRangeValue, setSelectedRangeValue] = React.useState<RangeValue>(rangeType2RangeValues['classic'][0])
+
+  const viewPoints = rangeType2ViewPoints[selectedRangeType.id] ?? []
+  React.useEffect(() => {
+    if (! viewPoints.map((viewPoint) => viewPoint.id).includes(selectedViewPoint.id)) {
+      setSelectedViewPoint(viewPoints[0])
+    }
+  }, [viewPoints, selectedViewPoint])
+
+  const rangeValues = rangeType2RangeValues[selectedRangeType.id] ?? []
+  React.useEffect(() => {
+    if (! rangeValues.map((rangeValue) => rangeValue.id).includes(selectedRangeValue.id)) {
+      setSelectedRangeValue(rangeValues[0])
+    }
+  }, [rangeValues, selectedRangeValue])
+
+  const rangeImageSharp = rangeImagesData.allFile.edges.find(
+    (edge) =>
+      edge.node.relativePath === `${selectedRangeType.id}/${selectedViewPoint.id}/${selectedRangeValue.id}.png`
+  )?.node.childImageSharp ?? null
+  const rangeImage = getImage(rangeImageSharp)
+
   return (
-    <main style={pageStyles}>
-      <h1 style={headingStyles}>
-        Congratulations
-        <br />
-        <span style={headingAccentStyles}>— you just made a Gatsby site! 🎉🎉🎉</span>
+    <main className='container p-6'>
+      <h1 className='is-size-3'>
+        Among Us Range
       </h1>
-      <p style={paragraphStyles}>
-        Edit <code style={codeStyles}>src/pages/index.tsx</code> to see this page
-        update in real-time. 😎
-      </p>
-      <ul style={doclistStyles}>
-        {docLinks.map(doc => (
-          <li key={doc.url} style={docLinkStyle}>
-            <a
-              style={linkStyle}
-              href={`${doc.url}?utm_source=starter&utm_medium=ts-docs&utm_campaign=minimal-starter-ts`}
-            >
-              {doc.text}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <ul style={listStyles}>
-        {links.map(link => (
-          <li key={link.url} style={{ ...listItemStyles, color: link.color }}>
-            <span>
-              <a
-                style={linkStyle}
-                href={`${link.url}?utm_source=starter&utm_medium=start-page&utm_campaign=minimal-starter-ts`}
-              >
-                {link.text}
-              </a>
-              {link.badge && (
-                <span style={badgeStyle} aria-label="New Badge">
-                  NEW!
-                </span>
-              )}
-              <p style={descriptionStyle}>{link.description}</p>
-            </span>
-          </li>
-        ))}
-      </ul>
-      <img
-        alt="Gatsby G Logo"
-        src="data:image/svg+xml,%3Csvg width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 2a10 10 0 110 20 10 10 0 010-20zm0 2c-3.73 0-6.86 2.55-7.75 6L14 19.75c3.45-.89 6-4.02 6-7.75h-5.25v1.5h3.45a6.37 6.37 0 01-3.89 4.44L6.06 9.69C7 7.31 9.3 5.63 12 5.63c2.13 0 4 1.04 5.18 2.65l1.23-1.06A7.959 7.959 0 0012 4zm-8 8a8 8 0 008 8c.04 0 .09 0-8-8z' fill='%23639'/%3E%3C/svg%3E"
-      />
+      <h1 className='is-size-7 mb-5'>
+        Among Us v2022.12.14 / Extreme Roles v5.0.0.6
+      </h1>
+      <div className='columns'>
+        <div className='column'>
+          <div className='field'>
+            <label className='label'>
+              レンジの種類
+            </label>
+            <div className='control'>
+              {rangeTypes.map((rangeType) => (
+                <button
+                key={rangeType.id}
+                className={`button ${selectedRangeType.id === rangeType.id ? 'is-dark' : ''}`}
+                  onClick={() => { setSelectedRangeType(rangeType); }}
+                >
+                    {rangeType.name}
+                  </button>
+              ))}
+            </div>
+          </div>
+          <div className='field'>
+            <label className='label'>
+              視点
+            </label>
+            <div className='control'>
+              {viewPoints.map((viewPoint) => (
+                <button
+                  key={viewPoint.id}
+                  className={`button ${selectedViewPoint.id === viewPoint.id ? 'is-dark' : ''}`}
+                  onClick={() => { setSelectedViewPoint(viewPoint); }}
+                >
+                    {viewPoint.name}
+                  </button>
+              ))}
+            </div>
+          </div>
+          <div className='field'>
+            <label className='label'>
+              レンジ
+            </label>
+            <div className='control'>
+              {rangeValues.map((rangeValue) => (
+                <button
+                  key={rangeValue.id}
+                  className={`button ${selectedRangeValue.id === rangeValue.id ? 'is-dark' : ''}`}
+                  onClick={() => { setSelectedRangeValue(rangeValue); }}
+                >
+                    {rangeValue.name}
+                  </button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className='column'>
+          {rangeImage !== undefined ? (
+            <GatsbyImage image={rangeImage} alt='' />
+          ) : ''}
+        </div>
+      </div>
     </main>
   )
 }
