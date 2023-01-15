@@ -224,6 +224,12 @@ const IndexPage: React.FC<PageProps> = () => {
           ) : ''}
         </div>
       </div>
+      <aside className='is-size-7 mb-5'>
+        This website is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. © Innersloth LLC.
+      </aside>
+      <aside className='is-size-7 mb-5'>
+        Developer © <a href='https://github.com/aoirint'>aoirint</a>. <a href="https://github.com/aoirint/among_us_range">Repository</a>.
+      </aside>
     </main>
   )
 }
