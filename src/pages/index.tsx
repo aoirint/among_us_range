@@ -220,7 +220,7 @@ const IndexPage: React.FC<PageProps> = () => {
         </div>
         <div className='column'>
           {rangeImage !== undefined ? (
-            <GatsbyImage image={rangeImage} alt='' />
+            <GatsbyImage image={rangeImage} alt='' loading='eager' />
           ) : ''}
         </div>
       </div>
